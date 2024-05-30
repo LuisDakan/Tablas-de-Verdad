@@ -8,9 +8,7 @@ def showTable(prop,variables,entries,results=[]):
         print(i,end=" ")
     print(" | ",end="")
     for i in range(len(prop)):
-        if(i<len(prop)-1 and (prop[i+1]!='>' and (prop[i]!='<'))):
            print(prop[i],end=" ")
-        else: print(prop[i],end="")
     print()
     for i in range(2*(len(variables)+len(prop)+3)):
         print("-",end="")
@@ -21,12 +19,15 @@ def showTable(prop,variables,entries,results=[]):
         print()
 
 def main():
-    prop=input("Ingrese la proposición lógica: ")
+    prop=input("Ingrese la proposición lógica (→ v ∧ ↔): ")
+    results=[]
     variables=pp.getVar(prop)
-    #print(variables)
+    dictio={}
+    for i in variables:
+        dictio[i]=-1
     entries=pp.getInputs(len(variables))
     for i in entries:
-        sv.SolExpr(i)
+        results.append(sv.SolExpr(entry=i,dictio=dictio,variables=variables,prop=prop))
     showTable(prop=prop,variables=variables,entries=entries)
 
 main()

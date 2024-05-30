@@ -1,15 +1,18 @@
 
-def AND():
-    pass
+def AND(r,s):
+    return r*s
 
-def OR():
-    pass
+def OR(r,s):
+    return r+s
 
-def NOT():
-    pass
+def NOT(r):
+    return (not r)
 
-def COND():
-    pass
+def COND(r,s):
+    if(s==0 and r==1):
+        return 0
+    else:
+        return 1
 
-def BICOND():
-    pass
+def BICOND(r,s):
+    return r^s
