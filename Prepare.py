@@ -17,6 +17,67 @@ def getInputs(n):
         l.append(m)
     return l
 
-def verifications(prop):
-    pass
+def es_sintaxis_correcta(proposicion):
+    # Expresión regular para reconocer variables, operadores lógicos y paréntesis
+    patron = re.compile(r'^[()\sA-Za-z01→v∧↔¬]+$')
+    
+    # Verificar que solo contenga caracteres permitidos
+    if not patron.match(proposicion):
+        return False
+    
+    # Verificar balanceo de paréntesis
+    balanceo = 0
+    for char in proposicion:
+        if char == '(':
+            balanceo += 1
+        elif char == ')':
+            balanceo -= 1
+        if balanceo < 0:
+            return False
+    
+    if balanceo != 0:
+        return False
+    
+    # Verificar estructura de operadores y operandos
+    tokens = re.findall(r'[A-Za-z01]+|[→v∧↔¬()]', proposicion)
+    if not tokens:
+        return False
+    
+    ultimo_token = None
+    for token in tokens:
+        if token in '()':
+            ultimo_token = token
+        elif token in '→v∧↔¬':
+            if ultimo_token in '→v∧↔¬' or ultimo_token in (None, '('):
+                return False
+            ultimo_token = token
+        else:  # Es un operando (variable o constante)
+            if ultimo_token not in (None, '(', '→v∧↔¬'):
+                return False
+            ultimo_token = token
+    
+    if ultimo_token in '→v∧↔¬':
+        return False
+    
+    return True
+
+# Ejemplos de uso
+proposiciones = [
+    "(A ∧ B) v (C ↔ D)",
+    "A ∧ (B v C)",
+    "A v (B ∧ (C v D))",
+    "A ∧ (B v C",
+    "A v B)",
+    "A ∧ v B",
+    "A ∧ (B v ¬C)",
+    "A → B",
+    "¬A ∧ B",
+    "(A → B) ↔ (C ∧ D)"
+]
+
+for prop in proposiciones:
+    print(f"{prop}: {es_sintaxis_correcta(prop)}")
+
+
+
 

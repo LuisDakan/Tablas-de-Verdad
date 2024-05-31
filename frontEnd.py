@@ -5,8 +5,8 @@ import Solve as sv
 
 def showTable(prop,variables,entries,results,clase):
     columns=len(variables)
-    for i in prop:
-        if(i!='(' or i!=')'):
+    for i in range(len(prop)):
+        if(prop[i]!='(' and prop[i]!=')'):
             columns+=1
     ind='    '
     lengthV=len(variables)
@@ -21,17 +21,21 @@ def showTable(prop,variables,entries,results,clase):
         cad+=i+' '
     cad+='} & \n'
     cad+=ind+ind+ind+'\\multicolumn{'+str(columns-lengthV)+'}'+'{ |c|}{'
-    for i in prop:
-        cad+=i+' '
-    cad+='} \\\\'+'   \\hline \n'
+    for i in range(len(prop)-1):
+        if(prop[i]!='(' and prop[i+1]!=')'):
+            cad+=prop[i]+' '
+        else: cad+=prop[i]
+    cad+=prop[-1]+'} \\\\'+'   \\hline \n'
     for i in range(len(entries)):
         cad+=ind+ind+ind
         for j in entries[i]:
             cad+=str(j)+' & '
-        for j in range(len(results[i])-1):
-            if(results[i][j]!='(' or results[i][j]!=')'):
-                cad+=str(results[i][j])+' & '
-        if(results[i][-1]!=')'): cad+=str(results[i][-1])
+        for j in range(len(prop)-1):
+            if(prop[j]!='('):
+                if(prop[j+1]==')'):
+                    cad+=str(results[i][j])
+                else: cad+=str(results[i][j])+' & '
+        if(prop[-1]!=')'): cad+=str(results[i][-1])
         cad+='\\\\   \\hline  \n'
     cad+=ind+ind+'\\end{tabular}\n'
     cad+=ind+'\\end{table}\nEs una '
@@ -47,6 +51,9 @@ def showTable(prop,variables,entries,results,clase):
 
 def main():
     prop=input("Ingrese la proposición lógica (→ v ∧ ↔ ¬): ") 
+    if(not pp.es_sintaxis_correcta(prop)): 
+        print("Proposición sin estructura")
+        return
     results=[]
     variables=pp.getVar(prop)
     dictio={}
