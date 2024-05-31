@@ -19,7 +19,7 @@ def showTable(prop,variables,entries,results=[]):
         print()
 
 def main():
-    prop=input("Ingrese la proposición lógica (→ v ∧ ↔): ")
+    prop=input("Ingrese la proposición lógica (→ v ∧ ↔ ¬): ")
     results=[]
     variables=pp.getVar(prop)
     dictio={}
@@ -27,7 +27,7 @@ def main():
         dictio[i]=-1
     entries=pp.getInputs(len(variables))
     for i in entries:
-        results.append(sv.SolExpr(entry=i,dictio=dictio,variables=variables,prop=prop))
-    showTable(prop=prop,variables=variables,entries=entries)
+        print(sv.SolExpr(entry=i,dictio=dictio,variables=variables,prop=prop))
+    #showTable(prop=prop,variables=variables,entries=entries)
 
 main()

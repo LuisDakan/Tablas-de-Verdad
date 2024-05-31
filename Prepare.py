@@ -3,7 +3,7 @@ import re
 def getVar(prop):
     Svariables=set()
     for x in prop:
-        if(re.match("[a-z]",x)):
+        if(re.match("[a-z]",x) and x!='v'):
             Svariables.add(x)
     return sorted(Svariables)
 
