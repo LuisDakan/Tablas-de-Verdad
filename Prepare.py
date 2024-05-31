@@ -17,3 +17,6 @@ def getInputs(n):
         l.append(m)
     return l
 
+def verifications(prop):
+    pass
+

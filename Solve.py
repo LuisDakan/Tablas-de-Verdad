@@ -42,17 +42,15 @@ def separate(sol,l,r):
             stack.append(i)
     return evaluate(sol,l,r,dictio)
 
-def SolExpr(entry,dictio,variables,prop):
+def SolExpr(entry,dictio,variables,prop,l):
     for i in range(len(entry)):
         dictio[variables[i]]=entry[i]
-    l=[]
     i=0
     for i in prop:
         if(i in dictio):
             l.append(dictio[i])
         else:
             l.append(i)
-    separate(l,0,len(l))
-    return l
+    return l[separate(l,0,len(l))]
 
     
