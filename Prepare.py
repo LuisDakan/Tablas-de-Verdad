@@ -48,11 +48,12 @@ def es_sintaxis_correcta(proposicion):
         if token in '()':
             ultimo_token = token
         elif token in '→v∧↔¬':
-            if ultimo_token in '→v∧↔¬' or ultimo_token in (None, '('):
+            if ultimo_token is None or ultimo_token in '→v∧↔¬' or ultimo_token in ('('):
+                print(ultimo_token)
                 return False
             ultimo_token = token
         else:  # Es un operando (variable o constante)
-            if ultimo_token not in (None, '(', '→v∧↔¬'):
+            if ultimo_token not in ( '(', '→v∧↔¬') or ultimo_token is None:
                 return False
             ultimo_token = token
     
