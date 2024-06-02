@@ -12,10 +12,12 @@ def getInputs(n):
     for i in range(1<<n):
         m=[]
         for j in range(n):
-            if((1<<j)&i): m.append(1)
-            else: m.append(0)
+            if((1<<j)&i): m.insert(0,1)
+            else: m.insert(0,0)
         l.append(m)
     return l
+
+import re
 
 def es_sintaxis_correcta(proposicion):
     # Expresión regular para reconocer variables, operadores lógicos y paréntesis
@@ -45,15 +47,24 @@ def es_sintaxis_correcta(proposicion):
     
     ultimo_token = None
     for token in tokens:
-        if token in '()':
+        if token == '(':
+            if ultimo_token and ultimo_token not in '→v∧↔¬(':
+                return False
             ultimo_token = token
-        elif token in '→v∧↔¬':
-            if ultimo_token is None or ultimo_token in '→v∧↔¬' or ultimo_token in ('('):
-                print(ultimo_token)
+        elif token == ')':
+            if ultimo_token in '→v∧↔¬(' or ultimo_token is None:
+                return False
+            ultimo_token = token
+        elif token in '→v∧↔':
+            if ultimo_token in '→v∧↔¬' or (not(ultimo_token is None) and ultimo_token not in '('):
+                return False
+            ultimo_token = token
+        elif token == '¬':
+            if not(ultimo_token is None) and ultimo_token not in '('  and ultimo_token not in '→v∧↔':
                 return False
             ultimo_token = token
         else:  # Es un operando (variable o constante)
-            if ultimo_token not in ( '(', '→v∧↔¬') or ultimo_token is None:
+            if not(ultimo_token is None) and ultimo_token not in '(' and ultimo_token not in '→v∧↔¬':
                 return False
             ultimo_token = token
     
@@ -62,22 +73,8 @@ def es_sintaxis_correcta(proposicion):
     
     return True
 
-# Ejemplos de uso
-proposiciones = [
-    "(A ∧ B) v (C ↔ D)",
-    "A ∧ (B v C)",
-    "A v (B ∧ (C v D))",
-    "A ∧ (B v C",
-    "A v B)",
-    "A ∧ v B",
-    "A ∧ (B v ¬C)",
-    "A → B",
-    "¬A ∧ B",
-    "(A → B) ↔ (C ∧ D)"
-]
 
-for prop in proposiciones:
-    print(f"{prop}: {es_sintaxis_correcta(prop)}")
+
 
 
 

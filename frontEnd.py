@@ -1,7 +1,19 @@
-
 import Prepare as pp
 import Operation as Op
 import Solve as sv
+
+def code(char):
+    if char=='¬':
+        return '$\\neg$'
+    elif char=='→':
+        return '$\\rightarrow$'
+    elif char=='v':
+        return '$\\lor$'
+    elif char=='∧':
+        return '$\\land$'
+    elif char=='↔':
+        return '$\\leftrightarrows$'
+    else: return char
 
 def showTable(prop,variables,entries,results,clase):
     columns=len(variables)
@@ -23,15 +35,15 @@ def showTable(prop,variables,entries,results,clase):
     cad+=ind+ind+ind+'\\multicolumn{'+str(columns-lengthV)+'}'+'{ |c|}{'
     for i in range(len(prop)-1):
         if(prop[i]!='(' and prop[i+1]!=')'):
-            cad+=prop[i]+' '
-        else: cad+=prop[i]
+            cad+=code(prop[i])+' '
+        else: cad+=code(prop[i])
     cad+=prop[-1]+'} \\\\'+'   \\hline \n'
     for i in range(len(entries)):
         cad+=ind+ind+ind
         for j in entries[i]:
             cad+=str(j)+' & '
         for j in range(len(prop)-1):
-            if(prop[j]!='('):
+            if(prop[j]!='(' and prop[j]!=')'):
                 if(prop[j+1]==')'):
                     cad+=str(results[i][j])
                 else: cad+=str(results[i][j])+' & '
@@ -45,15 +57,12 @@ def showTable(prop,variables,entries,results,clase):
         cad+='Contingencia'
     else:
         cad+='Contradiccion'
-    with open("TablaL.txt","w") as ap:
+    with open("TablaL.txt","w",encoding="utf-8") as ap:
         ap.write(cad)
     
 
 def main():
     prop=input("Ingrese la proposición lógica (→ v ∧ ↔ ¬): ") 
-    if(not pp.es_sintaxis_correcta(prop)): 
-        print("Proposición sin estructura")
-        return
     results=[]
     variables=pp.getVar(prop)
     dictio={}
